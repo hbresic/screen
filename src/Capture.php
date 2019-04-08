@@ -118,6 +118,13 @@ class Capture
     public $binPath;
 
     /**
+     * Phantom JS command parameter which disables Read Eval Print Loop
+     *
+     * @var string
+     */
+    public $noRepl = '--no-repl';
+
+    /**
      * Template directory, directory in which will be the js templates files to execute
      *
      * @var string
@@ -259,7 +266,7 @@ class Capture
             file_put_contents($jobPath, $resultString);
         }
 
-        $command = sprintf("%sphantomjs %s %s --no-repl", $this->binPath, $this->getOptionsString(), $jobPath);
+        $command = sprintf("%sphantomjs %s %s %s", $this->binPath, $this->getOptionsString(), $jobPath, $this->noRepl);
 
         // Run the command and ensure it executes successfully
         $returnCode = null;
@@ -337,6 +344,14 @@ class Capture
     public function setUrl($url)
     {
         $this->url = new Url($url);
+    }
+
+    /**
+     * Sets noRepl to empty string and enables REPL when initiating PhantomJS
+     */
+    public function enableRepl ()
+    {
+        $this->noRepl = '';
     }
 
     /**
